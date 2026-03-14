@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muhamad Fikri Nabawi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;900&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+
+        :root {
+            --bg-color: #0d1321;
+            /* Dark blue/navy background matched from second photo */
+            --accent: #d4af37;
+            /* elegant gold/yellow */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: #ffffff;
+            margin: 0;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .font-serif-italic {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+        }
+
+        /* Video loop style background using CSS gradients and animations */
+        .video-bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+            background-color: #0a1128;
+        }
+
+        /* Animated gradient blobs moving to simulate video looping background */
+        .blob-1 {
+            position: absolute;
+            top: -20%;
+            left: -10%;
+            width: 70vw;
+            height: 70vw;
+            background: radial-gradient(circle, rgba(28, 55, 90, 0.4) 0%, rgba(10, 17, 40, 0) 70%);
+            animation: move-blob1 15s infinite alternate ease-in-out;
+            filter: blur(80px);
+        }
+
+        .blob-2 {
+            position: absolute;
+            bottom: -20%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(15, 30, 60, 0.6) 0%, rgba(10, 17, 40, 0) 70%);
+            animation: move-blob2 18s infinite alternate-reverse ease-in-out;
+            filter: blur(100px);
+        }
+
+        .blob-3 {
+            position: absolute;
+            top: 40%;
+            left: 40%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(40, 70, 110, 0.3) 0%, rgba(10, 17, 40, 0) 60%);
+            animation: move-blob3 20s infinite alternate ease-in-out;
+            filter: blur(90px);
+            mix-blend-mode: screen;
+        }
+
+        @keyframes move-blob1 {
+            0% {
+                transform: scale(1) translate(0, 0);
+            }
+
+            50% {
+                transform: scale(1.1) translate(10%, 5%);
+            }
+
+            100% {
+                transform: scale(1) translate(-5%, 10%);
+            }
+        }
+
+        @keyframes move-blob2 {
+            0% {
+                transform: scale(1) translate(0, 0);
+            }
+
+            50% {
+                transform: scale(1.05) translate(-10%, -5%);
+            }
+
+            100% {
+                transform: scale(1.1) translate(5%, -10%);
+            }
+        }
+
+        @keyframes move-blob3 {
+            0% {
+                transform: scale(1) translate(0, 0);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.2) translate(-15%, 10%);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(0.9) translate(10%, -15%);
+                opacity: 0.5;
+            }
+        }
+
+        /* Heavy Grainy Noise like image 2 */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.08;
+            /* increased opacity for heavier noise */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Scroll Snap */
+        .slide-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            /* Hide scrollbar for clean look */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .slide-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .slide {
+            min-height: 100vh;
+            width: 100vw;
+            scroll-snap-align: center;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            perspective: 1000px;
+        }
+
+        /* Custom Teks Hover in Nav */
+        .link-hover {
+            position: relative;
+            color: #888;
+            transition: color 0.4s ease;
+        }
+
+        .link-hover:hover {
+            color: #fff;
+        }
+
+        .link-hover::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 1px;
+            background: var(--accent);
+            bottom: -4px;
+            left: 0;
+            transition: width 0.4s ease;
+        }
+
+        .link-hover:hover::after {
+            width: 100%;
+        }
+
+        /* Animations for reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 {
+            transition-delay: 0.3s;
+        }
+
+        .reveal-delay-2 {
+            transition-delay: 0.5s;
+        }
+
+        .reveal-delay-3 {
+            transition-delay: 0.6s;
+        }
+
+        .image-reveal {
+            opacity: 0;
+            transform: translateY(80px);
+            filter: blur(15px);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .image-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+
+        /* Specific styling for the selfie to match photo reference */
+        .portrait-container {
+            position: relative;
+            display: inline-block;
+            margin-top: 4rem;
+            /* Give space for the head to pop out top */
+        }
+
+        .portrait-backdrop {
+            position: absolute;
+            bottom: 0;
+            left: 5%;
+            /* Slight indent on sides to match photo */
+            width: 90%;
+            height: 100%;
+            /* Only goes 80% up the image, letting the head stick out */
+            background-color: #8e9095;
+            border-radius: 40px;
+            box-shadow: 25px 30px 40px rgba(0, 0, 0, 0.6);
+            /* Down-right distinct shadow */
+            z-index: 1;
+        }
+
+        .portrait-img {
+            position: relative;
+            z-index: 2;
+            max-height: 55vh;
+            border-radius: 20px;
+            object-fit: cover;
+            filter: contrast(1.1) brightness(0.95) drop-shadow(10px 10px 15px rgba(0, 0, 0, 0.3));
+            /* Shadow on person */
+        }
+
+        /* Card styles for fields */
+        .field-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1;
+            text-decoration: none;
+        }
+
+        @media (min-width: 768px) {
+            .field-card {
+                border-radius: 24px;
+                padding: 2.5rem;
+            }
+        }
+
+        .field-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .field-card i {
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 1rem;
+            transition: all 0.5s ease;
+        }
+
+        @media (min-width: 768px) {
+            .field-card i {
+                font-size: 3rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        .field-card:hover i {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .field-card span {
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            color: #ddd;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .field-card span {
+                letter-spacing: 2px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Coming Soon Animation */
+        .coming-soon-card .field-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.4s ease;
+        }
+
+        .coming-soon-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(13, 19, 33, 0.4);
+            backdrop-filter: blur(12px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            color: var(--accent);
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 1rem;
+            z-index: 10;
+        }
+
+        .coming-soon-card:hover .field-content,
+        .coming-soon-card:focus .field-content,
+        .coming-soon-card:active .field-content {
+            filter: blur(10px);
+            transform: scale(0.9);
+            opacity: 0;
+        }
+
+        .coming-soon-card:hover .coming-soon-overlay,
+        .coming-soon-card:focus .coming-soon-overlay,
+        .coming-soon-card:active .coming-soon-overlay {
+            opacity: 1;
+        }
+
+        /* Social icons */
+        .social-link {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+        }
+
+        @media (min-width: 768px) {
+            .social-link {
+                width: 100px;
+                height: 100px;
+            }
+        }
+
+        .social-link i {
+            font-size: 1.8rem;
+            transition: all 0.4s ease;
+        }
+
+        @media (min-width: 768px) {
+            .social-link i {
+                font-size: 2.5rem;
+            }
+        }
+
+        .social-link:hover {
+            border-color: var(--accent);
+            background: rgba(212, 175, 55, 0.05);
+            color: var(--accent);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Looping Video Style Background -->
+    <div class="video-bg-container">
+        <div class="blob-1"></div>
+        <div class="blob-2"></div>
+        <div class="blob-3"></div>
+    </div>
+
+    <!-- Heavier Grain Overlay simulating image texture -->
+    <div class="noise-overlay"></div>
+
+    <!-- Navigation Section Does Not Change Contextually, Just Styling -->
+    <nav id="navbar"
+        class="fixed top-0 left-0 w-full p-6 md:p-8 flex justify-between items-center z-40 text-[0.65rem] md:text-sm font-bold tracking-widest uppercase text-gray-300 transition-all duration-700">
+        <div class="w-1/3 text-white truncate">MUHAMAD FIKRI NABAWI</div>
+        <div class="w-1/3 text-center cursor-pointer truncate"><span class="link-hover"></span></div>
+        <div class="w-1/3 flex justify-end gap-3 md:gap-8 truncate">
+            <a href="#slide4" class="link-hover cursor-pointer text-gray-300 decoration-transparent">SOCIALS</a>
+            <a href="#slide4"
+                class="link-hover cursor-pointer hidden md:inline-block text-gray-300 decoration-transparent">CONTACTS</a>
+        </div>
+    </nav>
+
+    <div class="slide-container" id="scrollContainer">
+
+        <!-- Slide 1 -->
+        <section class="slide" id="slide1">
+            <h1 class="text-6xl md:text-[9rem] font-black tracking-tighter text-center leading-none reveal">
+                Hello,<br>
+                <span class="font-serif-italic text-[#d4af37] font-semibold"
+                    style="letter-spacing: -2px;">Welcome</span>
+            </h1>
+        </section>
+
+        <!-- Slide 2 -->
+        <section class="slide">
+            <div
+                class="max-w-7xl w-full flex flex-col md:flex-row items-center justify-center gap-8 md:gap-20 pt-24 md:pt-16 px-6">
+                <div class="w-full md:w-5/12 flex justify-center md:justify-end">
+                    <!-- Adjusted Image Box based on reference 1 (3D Pop-out) -->
+                    <div class="portrait-container image-reveal">
+                        <div class="portrait-backdrop"></div>
+                        <img src="PicsArt_07-04-02.26.07-removebg-preview.png" alt="Muhamad Fikri Nabawi"
+                            class="portrait-img">
+                    </div>
+                </div>
+                <div class="w-full md:w-6/12 mt-4 md:mt-0 text-center md:text-left">
+                    <p class="text-xl md:text-[2.5rem] font-light leading-[1.4] text-gray-300 reveal">
+                        Nice to meet you, <span class="text-white font-medium">I am Muhamad Fikri Nabawi</span>, a
+                        person who is very enthusiastic about things that are very challenging.
+                    </p>
+                    <p
+                        class="text-base md:text-2xl font-light leading-[1.6] text-gray-400 mt-4 md:mt-8 reveal reveal-delay-1">
+                        The challenges that he finds interesting for him are very happy to learn, and <span
+                            class="font-serif-italic text-[#d4af37]">upgrade skills</span> are about
+                        <span class="text-white font-medium">health, biotechnology, finance</span>, even <span
+                            class="text-white font-medium">technology</span> too, even though his background is <span
+                            class="font-serif-italic text-[#d4af37]">Pharmacy</span>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3 -->
+        <section class="slide">
+            <div class="max-w-6xl w-full px-6">
+                <h2 class="text-4xl md:text-6xl font-black mb-12 md:mb-16 text-center reveal">Fields of <span
+                        class="font-serif-italic text-[#d4af37]">Interest</span></h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 max-w-4xl mx-auto">
+                    <a href="#" class="field-card reveal" style="transition-delay: 0.4s;">
+                        <i class="fas fa-dna"></i>
+                        <span>Health & Biotechnology</span>
+                    </a>
+                    <a href="#" class="field-card coming-soon-card reveal" style="transition-delay: 0.6s;">
+                        <div class="field-content">
+                            <i class="fas fa-chart-pie"></i>
+                            <span>Finance</span>
+                        </div>
+                        <div class="coming-soon-overlay">
+                            <span>Coming Soon</span>
+                        </div>
+                    </a>
+                    <a href="#" class="field-card coming-soon-card reveal" style="transition-delay: 0.8s;">
+                        <div class="field-content">
+                            <i class="fas fa-microchip"></i>
+                            <span>Technology</span>
+                        </div>
+                        <div class="coming-soon-overlay">
+                            <span>Coming Soon</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4 -->
+        <section class="slide" id="slide4">
+            <div class="text-center w-full px-6">
+                <h2 class="text-5xl md:text-[7rem] font-black mb-12 md:mb-16 reveal">Let's <span
+                        class="font-serif-italic text-[#d4af37]">Connect</span></h2>
+                <div class="flex justify-center flex-wrap gap-6 md:gap-12 reveal reveal-delay-1">
+                    <a href="#" class="social-link" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="mailto:email@gmail.com" class="social-link" aria-label="Gmail">
+                        <i class="far fa-envelope"></i>
+                    </a>
+                </div>
+                <p
+                    class="mt-16 md:mt-24 text-gray-600 tracking-[0.15em] md:tracking-[0.2em] text-xs md:text-sm uppercase reveal reveal-delay-2">
+                    © 2026 Muhamad Fikri Nabawi</p>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const reveals = document.querySelectorAll('.reveal, .image-reveal');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    } else {
+                        // Re-trigger animation when scrolled back if desired
+                        entry.target.classList.remove('active');
+                    }
+                });
+            }, {
+                threshold: 0.15
+            });
+
+            reveals.forEach(reveal => {
+                observer.observe(reveal);
+            });
+
+            // Navigation Fade-out based on Scroll Slide 1
+            const slide1 = document.getElementById('slide1');
+            const navbar = document.getElementById('navbar');
+
+            const navObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navbar.style.opacity = '1';
+                        navbar.style.pointerEvents = 'auto';
+                    } else {
+                        navbar.style.opacity = '0';
+                        navbar.style.pointerEvents = 'none';
+                    }
+                });
+            }, {
+                threshold: 0.5
+            });
+
+            if (slide1 && navbar) {
+                navObserver.observe(slide1);
+            }
+        });
+    </script>
+</body>
+
+</html>
